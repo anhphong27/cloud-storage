@@ -1,0 +1,9 @@
+{% extends 'base/body.html' %}
+
+{% block content %}
+<main class="flex flex-col items-center justify-center h-screen text-center px-4">
+    <h1 class="text-5xl font-bold text-gray-800 mb-4">Cloud Storage</h1>
+    <p class="text-gray-600 text-lg mb-6">Lưu trữ dữ liệu của bạn với Cloud Storage</p>
+    <a href="{{url_for('login')}}" class="bg-blue-600 text-white px-6 py-3 rounded-lg text-lg hover:bg-blue-700 transition">Get Started</a>
+</main>
+{% endblock %}

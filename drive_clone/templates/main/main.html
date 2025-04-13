@@ -1,0 +1,109 @@
+{% extends 'base/body.html' %}
+
+{% block content %}
+<div class="flex h-screen bg-gray-100 ">
+    <aside class="w-72 bg-gray-900 text-white p-6 flex flex-col justify-between shadow-lg">
+        <div>
+            <h2 class="text-3xl font-bold mb-6">CloudStorage</h2>
+            <button id="uploadBtn"
+                    class="w-full bg-blue-500 hover:bg-blue-600 transition py-3 rounded-lg font-semibold mb-5">+ Upload File</button>
+            <input type="file" id="fileInput" class="hidden" onchange="upload_file(event)">
+            <nav>
+                <a href="{{ url_for('main') }}" class="block py-3 px-4 rounded-lg hover:bg-gray-700 transition">My Drive</a>
+            </nav>
+        </div>
+        <div>
+            <h3 class="font-bold text-lg">Storage</h3>
+            <p class="text-sm mb-2">{{ "%.1f"|format(total_storage_used/total_storage * 100) }}% used - {{
+                "%.1f"|format(total_storage_used) }} MB of {{ total_storage }} MB</p>
+            <div class="w-full bg-gray-700 h-2 rounded overflow-hidden">
+                <div class="bg-blue-500 h-2" style="width:{{ total_storage_used / total_storage * 100 }}%;"></div>
+            </div>
+            <a href="{{url_for('upgrade')}}" class="block mt-4">
+                <button class="w-full bg-blue-600 hover:bg-blue-700 transition py-3 rounded-lg font-semibold">Nâng cấp
+                </button>
+            </a>
+        </div>
+    </aside>
+
+    <main class="flex-1 p-8 overflow-auto ">
+        <header class="flex justify-between items-center mb-6">
+            <h1 class="text-4xl font-bold"> Danh sách file của {{ current_user.name }}</h1>
+            <a href="{{ url_for('logout') }}" class="bg-red-500 hover:bg-red-600 transition text-white px-5 py-2 rounded-lg font-semibold">Đăng xuất</a>
+        </header>
+
+        <form method="GET" action="{{ url_for('main') }}" class="flex items-center mb-6">
+            <input type="text" placeholder="Tìm file..." name="name" id="name" class="w-72 p-3 border rounded-lg shadow-sm" value="{{ request.args.get('name', '') }}">
+            <button type="submit" class="ml-3 bg-blue-500 hover:bg-blue-600 text-white px-5 py-3 rounded-lg font-semibold">Tìm</button>
+        </form>
+
+        <div class="bg-white p-6 rounded-lg shadow-md">
+            <table class="w-full border-collapse">
+                <thead>
+                <tr class="text-left border-b border-gray-300 bg-gray-200">
+                    <th class="py-3 px-4 text-left">Tên file</th>
+                    <th class="py-3 px-4 text-center">Loại file</th>
+                    <th class="py-3 px-4 text-center">Kích thước</th>
+                    <th class="py-3 px-4 text-center">Ngày tải lên</th>
+                    <th class="py-3 px-4 text-center"></th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for file in files %}
+                <tr class="border-b border-gray-200 hover:bg-gray-100 transition">
+                    <td class="py-3 px-4 text-left">{{ file.file_name }}</td>
+                    <td class="px-4 text-center">{{ file.file_type }}</td>
+                    <td class="px-4 text-center">{{ "%.1f"|format(file.file_size) }} MB</td>
+                    <td class="px-4 text-center">{{ file.upload_date.strftime('%d-%m-%Y') }}</td>
+                    <td class="px-4 text-center relative">
+                        <button class="menu-btn w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-200">⋮</button>
+                        <div class="menu hidden absolute right-0 mt-2 w-60 bg-white shadow-lg rounded-lg bg-gray-400 z-50">
+                            <button class="block w-full text-left px-4 py-2 hover:bg-gray-200" onclick="download_file('{{ url_for('download_file_process', file_id=file.id) }}')">Tải xuống</button>
+                            <hr class="border-gray-300">
+                            <button class="block w-full text-left px-4 py-2 hover:bg-gray-200" onclick="openRenameModal({{ file.id }}, '{{ file.file_name }}')">Đổi tên</button>
+                            <hr class="border-gray-300">
+                            <button class="block w-full text-left px-4 py-2 text-red-600 hover:bg-gray-200" onclick="delete_file({{file.id}})">Xoá</button>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </main>
+</div>
+
+<div id="renameModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
+    <div class="bg-white p-6 rounded-lg shadow-lg w-96">
+        <h2 class="text-xl font-semibold mb-4">Đổi tên file</h2>
+        <input type="text" id="newFileName" class="w-full p-3 border rounded-lg shadow-sm" placeholder="Nhập tên mới">
+        <div class="flex justify-end space-x-3 mt-4">
+            <button onclick="closeRenameModal()" class="bg-gray-500 text-white px-4 py-2 rounded-lg">Hủy</button>
+            <button onclick="confirmRename()" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg">Xác nhận</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById('uploadBtn').addEventListener('click', function() {
+        document.getElementById('fileInput').click();
+    });
+
+    document.querySelectorAll('.menu-btn').forEach(button => {
+        button.addEventListener('click', function(event) {
+            event.stopPropagation(); // Ngăn chặn sự kiện click trên document
+            let menu = this.nextElementSibling;
+            document.querySelectorAll('.menu').forEach(m => {
+                if (m !== menu) m.classList.add('hidden');
+            });
+            menu.classList.toggle('hidden');
+        });
+    });
+
+    document.addEventListener('click', function() {
+        document.querySelectorAll('.menu').forEach(menu => menu.classList.add('hidden'));
+    });
+
+    let fileIdToRename = null;
+</script>
+{% endblock %}

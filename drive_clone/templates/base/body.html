@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="{{ url_for('static', filename='js/script.js')}}"></script>
+    <title>CLoudStorage</title>
+</head>
+<body class="bg-gray-100">
+
+{% block header  %}
+{% include 'base/header.html' %}
+{% endblock %}
+
+<main class="container">
+    {% block content required %}
+    {% endblock %}
+</main>
+
+{% block footer  %}
+{% include 'base/footer.html' %}
+{% endblock %}
+
+</body>
+</html>
