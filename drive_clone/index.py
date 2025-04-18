@@ -197,6 +197,8 @@ def create_checkout_session():
     size = request.json.get('size')
     price = request.json.get('price')
 
+    domain = app.config["DOMAIN"]
+
     try:
         session = stripe.checkout.Session.create(
             payment_method_types=['card'],
@@ -215,8 +217,8 @@ def create_checkout_session():
                 'size': str(size),
                 'price': str(price)
             },
-            success_url='http://127.0.0.1:5000/payment_success?session_id={CHECKOUT_SESSION_ID}',
-            cancel_url='http://127.0.0.1:5000/payment_cancel',
+            success_url= f'http://{domain}/payment_success?session_id={{CHECKOUT_SESSION_ID}}',
+            cancel_url= f'http://{domain}/payment_cancel',
         )
 
         return jsonify({"success": True, 'checkout_url': session.url})
