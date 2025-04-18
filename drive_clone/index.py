@@ -1,5 +1,5 @@
 import os
-from datetime import  date
+from datetime import date
 import stripe
 from flask_login import login_user, logout_user, current_user, login_required
 from flask import render_template, redirect, request, jsonify, send_file
@@ -31,9 +31,6 @@ def login():
 def login_process():
     email = request.json.get('email')
     password = request.json.get('password')
-
-    if not email or not password:
-        return jsonify({'message': 'Vui lòng nhập đầy đủ email và mật khẩu', 'status': 400})
 
     user = dao.user_auth(email, password)
 
@@ -67,22 +64,21 @@ def register_process():
     name = request.json.get('name')
     email = request.json.get('email')
     password = request.json.get('password')
-    confirm_password = request.json.get('confirm_password')
-
-    if not email or not password or not name or not confirm_password:
-        return jsonify({'message': 'Vui lòng nhập đầy đủ thông tin', 'status': 400})
-
-    if '@' not in email:
-        return jsonify({'message': 'Địa chỉ mail không hợp lệ', 'status': 400})
-
-    if not password.__eq__(confirm_password):
-        return jsonify({'message': 'Mật khẩu và xác nhận lại mật khẩu không trùng khớp', 'status': 400})
 
     if dao.is_email_exist(email=email):
         return jsonify({'message': 'Email đã được đăng ký', 'status': 400})
 
-    dao.add_user(name=name, email=email, password=password)
-    return jsonify({'message': 'Đăng ký thành công', 'status': 200, 'redirect': '/login'})
+    if dao.add_user(name=name, email=email, password=password):
+        return jsonify({
+            'message': 'Đăng ký thành công',
+            'status': 200,
+            'redirect': '/login'
+        })
+    else:
+        return jsonify({
+            'message': "Đăng ký không thành công! Vui lòng kiểm tra lại thông tin!",
+            'status': 400
+        })
 
 
 ### Main-------------------------------------------------------------------------------------
@@ -90,11 +86,13 @@ def register_process():
 @login_required
 def main():
     name = request.args.get('name')
-    files = dao.load_user_files(user_id=current_user.id, name=name) or []
+    type = request.args.get('file_type')
+    files = dao.load_user_files(user_id=current_user.id, name=name,file_type=type) or []
+    file_type = dao.get_all_file_type() or []
 
     total_storage_used, total_storage = get_total_storage()
     return render_template("main/main.html", files=files, total_storage_used=total_storage_used,
-                           total_storage=total_storage)
+                           total_storage=total_storage, file_type=file_type)
 
 
 ### Upload file-------------------------------------------------------------------------------------
@@ -208,7 +206,7 @@ def create_checkout_session():
                     'product_data': {
                         'name': f'{size} GB Storage Upgrade',
                     },
-                    'unit_amount': int(price),
+                    'unit_amount': int(int(price) * 100),
                 },
                 'quantity': 1,
             }],
@@ -221,7 +219,7 @@ def create_checkout_session():
             cancel_url='http://127.0.0.1:5000/payment_cancel',
         )
 
-        return jsonify({"success":True,'checkout_url': session.url})
+        return jsonify({"success": True, 'checkout_url': session.url})
 
     except Exception as e:
         return jsonify({"success": False, 'error': f"Lỗi khi tạo phiên thanh toán: {str(e)}"})
@@ -250,7 +248,7 @@ def payment_success():
         today = date.today()
 
         if result:
-            return render_template("payment/success.html", price=price, size=size, date=today, id = transaction_id)
+            return render_template("payment/success.html", price=price, size=size, date=today, id=transaction_id)
         else:
             return "Thanh toán thành công nhưng có lỗi khi lưu dữ liệu vào hệ thống.", 500
 
@@ -261,7 +259,13 @@ def payment_success():
 @app.route('/payment_cancel')
 def payment_cancel():
     today = date.today()
-    return render_template("payment/cancel.html", date = today)
+    return render_template("payment/cancel.html", date=today)
+
+
+@app.route('/history_payment')
+def history_payment():
+    history_pay = dao.get_history_payment(current_user.id) or []
+    return render_template("payment/history.html", history_pay=history_pay)
 
 
 if __name__ == '__main__':

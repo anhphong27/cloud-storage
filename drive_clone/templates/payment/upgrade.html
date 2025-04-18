@@ -5,28 +5,38 @@
     <aside class="w-72 bg-gray-900 text-white p-6 flex flex-col justify-between shadow-lg">
         <div>
             <h2 class="text-3xl font-bold mb-6">CloudStorage</h2>
-            <a href="{{ url_for('main') }}" class="block w-full bg-blue-500 hover:bg-blue-600 transition py-3 rounded-lg font-semibold text-center">Quay lại</a>
+            <a href="{{ url_for('history_payment')}}"
+               class="block w-full bg-green-500 hover:bg-green-600 transition py-3 rounded-lg font-semibold text-center mb-4">
+                Lịch sử mua
+            </a>
+        </div>
+        <div>
+            <a href="{{ url_for('main') }}"
+               class="block w-full bg-blue-500 hover:bg-blue-600 transition py-3 rounded-lg font-semibold text-center">
+                Quay lại
+            </a>
         </div>
     </aside>
 
     <main class="flex-1 p-8 flex flex-col items-center justify-center">
         <div class="bg-white p-8 rounded-lg shadow-md w-full max-w-lg">
-            <h1 class="text-4xl font-bold mb-6 text-center">Nâng cấp dung lượng </h1>
+            <h1 class="text-4xl font-bold mb-6 text-center">Nâng cấp dung lượng</h1>
             <p class="text-gray-600 mb-6 text-center">Lựa chọn nâng cấp</p>
 
             <div class="space-y-6">
                 <div class="p-6 border rounded-2xl hover:shadow-lg transition cursor-pointer">
                     <h2 class="text-2xl font-semibold">Basic Plan</h2>
-                    <p class="text-gray-500">500 MB - 1000 VNĐ/Tháng</p>
-                    <button class="mt-4 w-full bg-blue-500 hover:bg-blue-600 transition text-white py-3 rounded-lg font-semibold" onclick="pay(500,100000)">Chọn</button>
+                    <p class="text-gray-500">500 MB - 10 $/Tháng</p>
+                    <button class="mt-4 w-full bg-blue-500 hover:bg-blue-600 transition text-white py-3 rounded-lg font-semibold"
+                            onclick="pay(500,10)">Chọn</button>
                 </div>
 
                 <div class="p-6 border rounded-2xl hover:shadow-lg transition cursor-pointer">
                     <h2 class="text-2xl font-semibold">Standard Plan</h2>
-                    <p class="text-gray-500">1000 MB - 1900 VNĐ/Tháng</p>
-                    <button class="mt-4 w-full bg-blue-500 hover:bg-blue-600 transition text-white py-3 rounded-lg font-semibold" onclick="pay(1000,190000)">Chọn</button>
+                    <p class="text-gray-500">1000 MB - 19 $/Tháng</p>
+                    <button class="mt-4 w-full bg-blue-500 hover:bg-blue-600 transition text-white py-3 rounded-lg font-semibold"
+                            onclick="pay(1000,19)">Chọn</button>
                 </div>
-
             </div>
         </div>
     </main>

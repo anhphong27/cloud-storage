@@ -10,17 +10,17 @@
       </svg>
     </div>
 
-    <h2 class="text-2xl font-semibold text-gray-800 mb-2">Payment Successful</h2>
-    <p class="text-gray-600 mb-6">Thank you for your purchase. Your payment has been processed successfully.</p>
+    <h2 class="text-2xl font-semibold text-gray-800 mb-2">Thanh toán thành công</h2>
+    <p class="text-gray-600 mb-6">Cảm ơn bạn đã thanh toán! Thông tin thanh toán đã được ghi nhận.</p>
 
     <div class="bg-gray-100 p-4 rounded-lg text-sm text-left mb-6">
-      <p><span class="font-semibold text-gray-800">Amount:</span>${{price}}</p>
-      <p><span class="font-semibold text-gray-800">Transaction ID:</span>#{{id}}</p>
-      <p><span class="font-semibold text-gray-800">Date:</span> {{date}}</p>
+      <p><span class="font-semibold text-gray-800"> Giá: </span>${{price}}</p>
+      <p><span class="font-semibold text-gray-800"> ID: </span>#{{id}}</p>
+      <p><span class="font-semibold text-gray-800"> Ngày: </span> {{date}}</p>
     </div>
 
-    <a href="{{url_for('main')}}" class="inline-block bg-blue-600 hover:bg-blue-700 text-white font-medium px-6 py-2 rounded-lg transition duration-200">
-      Go to Dashboard
+    <a href="{{url_for('upgrade')}}" class="inline-block bg-blue-600 hover:bg-blue-700 text-white font-medium px-6 py-2 rounded-lg transition duration-200">
+      Quay lại
     </a>
   </div>
 </main>

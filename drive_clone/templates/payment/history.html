@@ -1,0 +1,50 @@
+{% extends 'base/body.html' %}
+
+{% block content %}
+<div class="flex h-screen bg-gray-100">
+    <aside class="w-72 bg-gray-900 text-white p-6 flex flex-col justify-between shadow-lg">
+        <div>
+            <h2 class="text-3xl font-bold mb-6">CloudStorage</h2>
+        </div>
+        <div class="space-y-4">
+            <a href="{{ url_for('upgrade') }}"
+               class="block w-full bg-blue-500 hover:bg-blue-600 transition py-3 rounded-lg font-semibold text-center">
+                Quay lại
+            </a>
+        </div>
+    </aside>
+
+    <main class="flex-1 p-8 flex flex-col items-center justify-start overflow-y-auto">
+        <div class="bg-white p-8 rounded-lg shadow-md w-full max-w-4xl">
+            <h1 class="text-4xl font-bold mb-6 text-center">Lịch sử mua dung lượng</h1>
+
+            {% if history_pay %}
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="bg-gray-100 border-b">
+                            <th class="p-4 font-semibold">Ngày mua</th>
+                            <th class="p-4 font-semibold">Ngày hết hạn</th>
+                            <th class="p-4 font-semibold">Dung lượng</th>
+                            <th class="p-4 font-semibold">Giá</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in history_pay %}
+                        <tr class="border-b hover:bg-gray-50">
+                            <td class="p-4">{{ item.pay_date.strftime('%d/%m/%Y') }}</td>
+                            <td class="p-4">{{ item.expiry_date.strftime('%d/%m/%Y') }}</td>
+                            <td class="p-4">{{ item.size }} MB</td>
+                            <td class="p-4">{{ item.price }}$</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <p class="text-center text-gray-500">Bạn chưa có giao dịch nào.</p>
+            {% endif %}
+        </div>
+    </main>
+</div>
+{% endblock %}

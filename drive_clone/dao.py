@@ -48,7 +48,6 @@ def add_file(file_name, file_path, file_size, file_type, user_id):
 
 
 def is_file_exist(file_name, user_id):
-    db.session.expire_all()
     return File.query.filter(File.user_id.__eq__(user_id), File.file_name.__eq__(file_name)).first() is not None
 
 
@@ -79,11 +78,13 @@ def rename_file(file_id, new_file_name, new_file_path):
         file = get_file_by_id(file_id=file_id)
         file.file_name = new_file_name
         file.file_path = new_file_path
-
         db.session.commit()
         return True
     except SQLAlchemyError:
         return False
+
+def get_all_file_type():
+    return db.session.query(File.file_type).distinct().all()
 
 
 ### Storage-----------------------------------------------------------------------------
@@ -125,3 +126,7 @@ def success_payment(sp_id):
         db.session.commit()
     except SQLAlchemyError:
         return False
+
+### History payment -----------------------------------------------------------------------------------------
+def get_history_payment(user_id):
+    return StoragePurchase.query.filter(StoragePurchase.user_id.__eq__(user_id)).order_by(StoragePurchase.pay_date.desc()).all()

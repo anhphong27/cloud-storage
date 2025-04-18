@@ -10,22 +10,17 @@
       </svg>
     </div>
 
-    <h2 class="text-2xl font-semibold text-gray-800 mb-2">Payment Canceled</h2>
-    <p class="text-gray-600 mb-6">Your payment was not completed. If this was a mistake, you can try again.</p>
+    <h2 class="text-2xl font-semibold text-gray-800 mb-2">Thanh toán không thành công!</h2>
+    <p class="text-gray-600 mb-6">Thanh toán không thể hoàn tất! Nếu gặp lỗi vui lòng thử lại sau!</p>
 
     <div class="bg-gray-100 p-4 rounded-lg text-sm text-left mb-6">
-      <p><span class="font-semibold text-gray-800">Status:</span> Canceled</p>
-      <p><span class="font-semibold text-gray-800">Transaction ID:</span> N/A</p>
-      <p><span class="font-semibold text-gray-800">Date:</span> {{date}}</p>
+      <p><span class="font-semibold text-gray-800"> Trạng thái: </span> Không thành công</p>
+      <p><span class="font-semibold text-gray-800"> ID: </span> N/A</p>
+      <p><span class="font-semibold text-gray-800"> Ngày: </span> {{date}}</p>
     </div>
 
     <div class="flex justify-center space-x-4">
-      <a href="/retry" class="bg-blue-600 hover:bg-blue-700 text-white font-medium px-6 py-2 rounded-lg transition duration-200">
-        Try Again
-      </a>
-      <a href="{{url_for('main')}}" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-medium px-6 py-2 rounded-lg transition duration-200">
-        Back to Home
-      </a>
+      <a href="{{url_for('upgrade')}}" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-medium px-6 py-2 rounded-lg transition duration-200">Quay lại</a>
     </div>
   </div>
 </main>

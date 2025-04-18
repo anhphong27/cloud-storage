@@ -1,5 +1,5 @@
 from drive_clone import app, db
-from sqlalchemy import Column, String, Integer, ForeignKey, Date, Float, func, Boolean
+from sqlalchemy import Column, String, Integer, ForeignKey, Date, Float, func
 from sqlalchemy.orm import relationship, backref
 from flask_login import UserMixin
 
@@ -20,7 +20,7 @@ class User(db.Model, UserMixin):
 class File(db.Model):
     id = Column(Integer, primary_key=True, autoincrement=True)
     file_name = Column(String(255), nullable=False)
-    file_path = db.Column(db.String(500), nullable=False)
+    file_path = Column(db.String(500), nullable=False)
     upload_date = Column(Date, default=db.func.current_timestamp())
     file_size = Column(Float, nullable=False)
     file_type = Column(String(50), nullable=False)
@@ -34,7 +34,6 @@ class StoragePurchase(db.Model):
     user_id = Column(Integer, ForeignKey(User.id, ondelete="CASCADE"), nullable=False)
     size = db.Column(db.Integer, nullable=False)
     price = Column(Float, default=0,nullable=False)
-    # status = Column(Boolean,default=False,nullable=False)
     pay_date = Column(Date, default=func.current_timestamp(), nullable=False)
     expiry_date = Column(Date, default=func.current_timestamp(), nullable=False)
 

@@ -28,14 +28,23 @@
 
     <main class="flex-1 p-8 overflow-auto ">
         <header class="flex justify-between items-center mb-6">
-            <h1 class="text-4xl font-bold"> Danh sách file của {{ current_user.name }}</h1>
+            <h1 class="text-4xl font-bold"> Danh sách file của bạn</h1>
             <a href="{{ url_for('logout') }}" class="bg-red-500 hover:bg-red-600 transition text-white px-5 py-2 rounded-lg font-semibold">Đăng xuất</a>
         </header>
 
-        <form method="GET" action="{{ url_for('main') }}" class="flex items-center mb-6">
-            <input type="text" placeholder="Tìm file..." name="name" id="name" class="w-72 p-3 border rounded-lg shadow-sm" value="{{ request.args.get('name', '') }}">
-            <button type="submit" class="ml-3 bg-blue-500 hover:bg-blue-600 text-white px-5 py-3 rounded-lg font-semibold">Tìm</button>
+        <form method="GET" action="{{ url_for('main') }}" class="flex items-center mb-6 space-x-3">
+            <input type="text" placeholder="Tìm file..." name="name" id="name"
+                   class="w-72 p-3 border rounded-lg shadow-sm"
+                   value="{{ request.args.get('name', '') }}">
+            <select name="file_type" class="p-3 border rounded-lg shadow-sm">
+                <option value="">Chọn loại file</option>
+                {% for f in file_type %}
+                    <option value="{{f[0]}}">{{f[0]}}</option>
+                {% endfor %}
+            </select>
+            <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white px-5 py-3 rounded-lg font-semibold">Tìm</button>
         </form>
+
 
         <div class="bg-white p-6 rounded-lg shadow-md">
             <table class="w-full border-collapse">

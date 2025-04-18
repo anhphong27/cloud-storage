@@ -1,53 +1,67 @@
 function login(){
-    const email = document.getElementById("email").value;
+    const email = document.getElementById("email").value.trim();
     const password = document.getElementById("password").value;
+
+    if (!email || !password){
+        alert("Vui lòng nhập đầy đủ tài khoản và mật khẩu")
+        return;
+    }
 
     fetch(`/api/login`, {
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            email: email,
-            password: password
-        })
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({email, password})
     })
-    .then(response => response.json()).then(data => {
+    .then(response => response.json())
+    .then(data => {
         if (data.status === 200) {
             window.location.href = data.redirect;
         }else {
             alert(data.message);
         }
+    })
+    .catch(error => {
+        alert("Đã xảy ra lỗi: " + error.message);
     });
 };
 
 function register() {
-    const name = document.getElementById('name').value;
-    const email = document.getElementById("email").value;
-    const password = document.getElementById("password").value;
-    const confirm_password = document.getElementById('confirm_password').value
+    const name = document.getElementById('name').value.trim();
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value.trim();
+    const confirm_password = document.getElementById('confirm_password').value.trim();
+
+    if (!name || !email || !password || !confirm_password) {
+        alert("Vui lòng nhập đầy đủ thông tin");
+        return;
+    }
+
+    if (!email.includes('@')) {
+        alert("Email không hợp lệ");
+        return;
+    }
+
+    if (password != confirm_password){
+        alert("Vui lòng nhập chính xác mật khẩu")
+        return;
+    }
 
     fetch(`/api/register`, {
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            name: name,
-            email: email,
-            password: password,
-            confirm_password : confirm_password
-        })
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email, password})
     })
     .then(response => response.json()).then(data => {
         if (data.status === 200) {
             alert(data.message);
             window.location.href = data.redirect;
-        }else {
+        } else {
             alert(data.message);
         }
+    }).catch(error => {
+        alert("Đã xảy ra lỗi: " + error.message);
     });
-};
+}
 
 function upload_file(event) {
     let fileInput = event.target;
@@ -55,7 +69,7 @@ function upload_file(event) {
 
     if (!file) return;
 
-    let formData = new FormData();
+    const formData = new FormData();
     formData.append("file", file);
 
     fetch("/api/upload", {
@@ -66,10 +80,13 @@ function upload_file(event) {
     .then(data => {
         if (data.success) {
             alert(data.message);
-            window.location.href = "/main";
+            location.reload();
         } else {
             alert(data.message);
         }
+    })
+    .catch(error => {
+        alert("Đã xảy ra lỗi: " + error.message);
     });
 };
 
@@ -85,20 +102,21 @@ function delete_file(file_id){
 
     fetch(`/api/delete_file/${file_id}`, {
         method: 'DELETE',
-        headers: {
-            'Content-Type': 'application/json'
-        }
+        headers: {'Content-Type': 'application/json'}
     })
-    .then(response => response.json()).then(data => {
+    .then(response => response.json())
+    .then(data => {
         if (data.success) {
             alert(data.message);
             location.reload();
         }else {
             alert(data.message);
         }
+    })
+    .catch(error => {
+        alert("Đã xảy ra lỗi: " + error.message);
     });
 };
-
 
 function openRenameModal(fileId, currentName) {
         fileIdToRename = fileId;
