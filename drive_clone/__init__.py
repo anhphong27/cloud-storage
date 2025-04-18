@@ -1,11 +1,15 @@
 from flask import Flask
 from flask_login import LoginManager
 from flask_sqlalchemy import SQLAlchemy
-from urllib.parse import quote
 import os
+from dotenv import load_dotenv
+
+
 
 ### Create app------------------------------------------------------------------------------------------
 app = Flask(__name__)
+
+load_dotenv()
 
 ### Secret Key------------------------------------------------------------------------------------------
 app.secret_key = 'asdasdasd1h23j123jsadsuidhaisudhaisudh@W@#'
@@ -14,7 +18,7 @@ app.secret_key = 'asdasdasd1h23j123jsadsuidhaisudhaisudh@W@#'
 app.config["DOMAIN"] = os.getenv("DOMAIN")
 
 ### Database------------------------------------------------------------------------------------------
-app.config["SQLALCHEMY_DATABASE_URI"] = "mysql+pymysql://admin:%s@test-db.c607f6oqfbba.us-east-1.rds.amazonaws.com/storage?charset=utf8mb4" % quote('Phong.2709')
+app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("SQLALCHEMY_DATABASE_URI")
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = True
 
 ### Storage Folder------------------------------------------------------------------------------------------
