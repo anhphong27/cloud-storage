@@ -14,7 +14,7 @@ app.secret_key = 'asdasdasd1h23j123jsadsuidhaisudhaisudh@W@#'
 app.config["DOMAIN"] = os.getenv("DOMAIN")
 
 ### Database------------------------------------------------------------------------------------------
-app.config["SQLALCHEMY_DATABASE_URI"] = "mysql+pymysql://root:%s@localhost/storage?charset=utf8mb4" % quote('1234')
+app.config["SQLALCHEMY_DATABASE_URI"] = "mysql+pymysql://admin:%s@test-db.c607f6oqfbba.us-east-1.rds.amazonaws.com/storage?charset=utf8mb4" % quote('Phong.2709')
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = True
 
 ### Storage Folder------------------------------------------------------------------------------------------
