@@ -1,8 +1,8 @@
 from datetime import date, timedelta
 from sqlalchemy import func
 from sqlalchemy.exc import SQLAlchemyError
-from drive_clone import db
-from drive_clone.models import User, File, StoragePurchase
+from app import db
+from app.models import User, File, StoragePurchase
 
 
 ### Email-----------------------------------------------------------------------------

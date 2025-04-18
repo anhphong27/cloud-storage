@@ -1,4 +1,4 @@
-from drive_clone import app, db
+from app import app, db
 from sqlalchemy import Column, String, Integer, ForeignKey, Date, Float, func
 from sqlalchemy.orm import relationship, backref
 from flask_login import UserMixin

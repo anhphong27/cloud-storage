@@ -3,7 +3,7 @@ from datetime import date
 import stripe
 from flask_login import login_user, logout_user, current_user, login_required
 from flask import render_template, redirect, request, jsonify, send_file
-from drive_clone import app, dao, login_manager
+from app import app, dao, login_manager
 
 
 ### Get total storage --------------------------------------------------------------------------
