@@ -8,10 +8,11 @@ RUN pip install  -r requirements.txt
 
 COPY . .
 
-WORKDIR /app/app
 
-ENV FLASK_APP=index.py
+ENV FLASK_APP=app/index.py
 
 ENV FLASK_ENV=production
 
-CMD ["gunicorn", "--bind", "0.0.0.0:8000", "index:app"]
+EXPOSE 5000
+
+CMD ["gunicorn", "--bind", "0.0.0.0:5000", "app.index:app"]

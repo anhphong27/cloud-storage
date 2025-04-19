@@ -90,8 +90,9 @@ function upload_file(event) {
     });
 };
 
-function download_file(url){
-    window.location.href = url;
+function download_file(file_id) {
+    const url = `/api/download_file/${file_id}`;
+    window.open(url, '_blank');
 }
 
 
