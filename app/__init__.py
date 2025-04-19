@@ -15,10 +15,10 @@ load_dotenv()
 app.secret_key = 'asdasdasd1h23j123jsadsuidhaisudhaisudh@W@#'
 
 ### Domain------------------------------------------------------------------------------------------
-app.config["DOMAIN"] = os.getenv("DOMAIN")
+app.config["DOMAIN"] = "127.0.0.1:5000"
 
 ### Database------------------------------------------------------------------------------------------
-app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("SQLALCHEMY_DATABASE_URI")
+app.config["SQLALCHEMY_DATABASE_URI"] = "mysql+pymysql://root:1234@localhost/storage?charset=utf8mb4"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = True
 
 ### Storage Folder------------------------------------------------------------------------------------------
